@@ -12,7 +12,9 @@ app.use(cors())
 
 // mongoose.connect("mongodb://localhost/sbStores", { useMongoClient: true })
 // mongoose.connect("mongodb://localhost/sbStores/store-list", { useMongoClient: true })
-mongoose.connect("mongodb://localhost/sbStores")
+// mongoose.connect("mongodb://localhost/sbStores")
+const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/sbStores"
+mongoose.connect(mongoUrl, { useMongoClient: true })
 // This makes mongo use ES6 promises, instead of its own implementation
 mongoose.Promise = Promise
 
@@ -57,5 +59,10 @@ app.get("/stores/:storeNr", (req, res) => {
   Store.find({ Nr: req.params.storeNr }).then(store => res.json(store))
 })
 
-app.listen(8080, () =>
-  console.log("Example app listening on port 8080!"))
+// app.listen(8080, () =>
+//   console.log("Example app listening on port 8080!"))
+
+const port = process.env.PORT || 8080
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`)
+})
